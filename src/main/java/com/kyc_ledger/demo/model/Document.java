@@ -28,7 +28,7 @@ public class Document {
     private String fileName ;
     @Column(nullable = false)
     private String filePath ; // Local cloud storage path
-    @Column(nullable = false);
+    @Column(nullable = false)
     private String fileHash ; // SHA-256 hash stored on the blockchain
     private String mimeType;
     private Long fileSize;
