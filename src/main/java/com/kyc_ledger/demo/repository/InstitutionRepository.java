@@ -1,6 +1,7 @@
 package com.kyc_ledger.demo.repository;
 import com.kyc_ledger.demo.model.Institution;
 import org.springframework.data.jpa.repository.JpaRepository;
+
 import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
