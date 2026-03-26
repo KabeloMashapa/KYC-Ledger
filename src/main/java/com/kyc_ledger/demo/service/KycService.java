@@ -62,5 +62,11 @@ public class KycService {
         return ApiResponseDTO.success("Kyc Successfull",mapToDTO(kycRecord));
 
     }
+    // Get KYC by Id
+    public ApiResponseDTO<KycResponseDTO> getKycById(String kycId) {
+        KycRecord kycRecord = kycRepository.findByKycId(kycId
+        ).orElseThrow(()-> new KycNotFoundException("KycId",kycId));
+        return ApiResponseDTO.success("KYC record found",mapToDTO(kycRecord));
+    }
 
 }
