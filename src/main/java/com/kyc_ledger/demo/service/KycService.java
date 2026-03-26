@@ -1,4 +1,5 @@
 package com.kyc_ledger.demo.service;
+import com.google.protobuf.Api;
 import com.kyc_ledger.demo.dto.*;
 import com.kyc_ledger.demo.exception.FabricException;
 import com.kyc_ledger.demo.exception.UserNotFoundException;
@@ -95,6 +96,7 @@ public class KycService {
         kycRecord.setStatus(KycRecord.KycStatus.APPROVED);
         kycRecord.setReviewedBy(admin);
         kycRecord.setReviewedAt(java.time.LocalDateTime.now());
+        kycRepository.save(kycRecord);
         // Send approval email
         emailService.sendKycApprovedEmail(
                 kycRecord.getUser().getEmail(),
@@ -102,6 +104,26 @@ public class KycService {
                 kycId
         );
         return ApiResponseDTO.success("Kyc Approved successfully",mapToDTO(kycRecord));
+
+    }
+    // Reject KYC
+    public ApiResponseDTO<List<KycResponseDTO>>  rejectKyc(String kycId,Long adminId, String reason) {
+        KycRecord kycRecord = kycRepository.findByKycId(kycId
+        ).orElseThrow(() -> new KycNotFoundException("kycId",kycId));
+        User admin = userRepository.findById(adminId
+                ).orElseThrow(()-> new KycNotFoundException(adminId));
+        fabricService.updateKycStatusOnBlockchain(kycId,"REJECTED");
+        kycRecord.setStatus(KycRecord.KycStatus.REJECTED);
+        kycRecord.setReviewedBy(admin);
+        kycRecord.setReviewedAt(java.time.LocalDateTime.now());
+        kycRepository.save(kycRecord);
+        // Send rejected email
+        emailService.sendKycRejectedEmail(
+                kycRecord.getUser().getEmail(),
+                kycRecord.getUser().getFullName(),
+                kycId
+        );
+        return ApiResponseDTO.success("Kyc Rejected",mapToDTO(kycRecord));
 
     }
 
