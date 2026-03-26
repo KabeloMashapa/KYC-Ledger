@@ -107,4 +107,5 @@ KYC-Ledger/
 ├── contracts/       # Smart contracts
 ├── docs/            # Documentation
 ├── scripts/         # Deployment or utility scripts
-└── README.md
+└── README.md        # Description of the project
+
