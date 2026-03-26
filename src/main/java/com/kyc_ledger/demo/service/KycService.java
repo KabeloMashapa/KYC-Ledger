@@ -85,5 +85,24 @@ public class KycService {
         return ApiResponseDTO.success("KYC records retrieved ",dtos);
 
     }
+    // Approve KYC
+    public ApiResponseDTO<List<KycResponseDTO>> approveKyc(String kycId, Long adminId) {
+        KycRecord kycRecord = kycRepository.findByKycId(kycId
+        ).orElseThrow(() -> new KycNotFoundException("kycId",kycId));
+        User admin = userRepository.findById(adminId
+        ).orElseThrow(()-> new UserNotFoundException(adminId));
+        fabricService.updateKycStatusOnBlockchain(kycId,"APPROVED");
+        kycRecord.setStatus(KycRecord.KycStatus.APPROVED);
+        kycRecord.setReviewedBy(admin);
+        kycRecord.setReviewedAt(java.time.LocalDateTime.now());
+        // Send approval email
+        emailService.sendKycApprovedEmail(
+                kycRecord.getUser().getEmail(),
+                kycRecord.getUser().getFullName(),
+                kycId
+        );
+        return ApiResponseDTO.success("Kyc Approved successfully",mapToDTO(kycRecord));
+
+    }
 
 }
