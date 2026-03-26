@@ -61,7 +61,6 @@ public class AuthService{
                 user.getEmail(),
                 user.getRole().name()
         );
-
         return ApiResponseDTO.success("Login successful",response);
     }
 
