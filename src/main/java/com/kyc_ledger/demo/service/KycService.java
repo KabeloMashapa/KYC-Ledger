@@ -68,5 +68,13 @@ public class KycService {
         ).orElseThrow(()-> new KycNotFoundException("KycId",kycId));
         return ApiResponseDTO.success("KYC record found",mapToDTO(kycRecord));
     }
+    // Get all Kyc Records for a user
+    public ApiResponseDTO<List<KycResponseDTO>> getKycByUserId(Long userId) {
+        List<KycRecord> records = kycRepository.findAllByUserId(userId);
+        List<KycResponseDTO> dtos = records.stream(
+                ).map(this::mapToDTO
+                ).collect(Collectors.toList());
+        return ApiResponseDTO.success("KYC records retrieved",dtos);
+    }
 
 }
