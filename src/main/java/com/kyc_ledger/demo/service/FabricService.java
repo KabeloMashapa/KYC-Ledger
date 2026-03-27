@@ -42,5 +42,14 @@ public class FabricService {
             throw new FabricException("Failed to verify KYC on blockchain", e);
         }
     }
+    public String queryKycFromBlockchain(String kycId) {
+        try {
+            System.out.println("Querying KYC from blockchain: " + kycId);
+            return "{\"kycId\":\"" + kycId + "\",\"status\":\"PENDING\"}";
+        }
+        catch (Exception e) {
+            throw new FabricException("Failed to query KYC from blockchain", e);
+        }
+    }
 
 }
