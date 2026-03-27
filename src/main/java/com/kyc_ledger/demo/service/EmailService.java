@@ -22,4 +22,17 @@ public class EmailService {
                         "Regards,\nKYC Blockchain Team"
         );
     }
+    // KYC Rejected
+    public void sendKycRejectedEmail(String to, String fullName,String kycId,String reason) {
+        sendEmail(
+                to,
+                "KYC Rejected - " + kycId,
+                "Dear " + fullName + ",\n\n" +
+                        "Unfortunately your KYC has been rejected.\n" +
+                        "KYC ID: " + kycId + "\n" +
+                        "Reason: " + reason + "\n\n" +
+                        "Please resubmit with correct documents.\n\n" +
+                        "Regards,\nKYC Blockchain Team"
+        );
+    }
 }
