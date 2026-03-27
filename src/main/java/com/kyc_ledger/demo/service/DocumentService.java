@@ -10,6 +10,7 @@ import com.kyc_ledger.demo.repository.KycRepository;
 import com.kyc_ledger.demo.util.FileUtil;
 import com.kyc_ledger.demo.util.HashUtil;
 import lombok.RequiredArgsConstructor;
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -59,8 +60,16 @@ public class DocumentService {
 
         }
         catch (IOException e) {
-            throw new RuntimeException("Failedd to upload document: "+e.getMessage());
+            throw new RuntimeException("Failed to upload document: "+e.getMessage());
         }
+    }
+    public ApiResponseDTO<List<DocumentDTO>> getDocumentsByKycId(String kycId) {
+
+        KycRecord kycRecord = kycRepository.findByKycId(kycId
+        ).orElseThrow(()-> new KycNotFoundException("kycId",kycId));
+        List<Document> documents = documentRepository.findByKycRecord(kycRecord);
+        List<DocumentDTO> dtos = documents.stream().map(this::mapToDTO).collect(Collectors.toList());
+        return ApiResponseDTO.success("Documents retrieved",dtos);
     }
 
 }
