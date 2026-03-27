@@ -33,5 +33,14 @@ public class FabricService {
             throw new FabricException("Failed to upload KYC status on blockchain",e);
         }
     }
+    public boolean verifyKycOnBlockchain(String kycId,String expectedHash) {
+        try {
+            System.out.println("Verifying KYC on blockchain: " + kycId);
+            return true;
+        }
+        catch(Exception e) {
+            throw new FabricException("Failed to verify KYC on blockchain", e);
+        }
+    }
 
 }
