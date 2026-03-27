@@ -24,5 +24,14 @@ public class FabricService {
 
         }
     }
+    public String updateKycStatusOnBlockchain(String kycId,String status) {
+        try {
+            System.out.println("Updating KYC status on blockchain: " + kycId + " -> " + status);
+            return "TX-" + java.util.UUID.randomUUID().toString().toUpperCase();
+
+        } catch (Exception e) {
+            throw new FabricException("Failed to upload KYC status on blockchain",e);
+        }
+    }
 
 }
