@@ -71,5 +71,32 @@ public class DocumentService {
         List<DocumentDTO> dtos = documents.stream().map(this::mapToDTO).collect(Collectors.toList());
         return ApiResponseDTO.success("Documents retrieved",dtos);
     }
+    public ApiResponseDTO<Boolean> verifyDocument(Long documentId,MultipartFile file) {
+
+        Document document = documentRepository.findById(documentId
+        ).orElseThrow(()-> new RuntimeException("Document not found"));
+        try {
+            boolean isValid = HashUtil.verifyFileHash(file,document.getFileHash());
+            return ApiResponseDTO.success(
+                    isValid ? "Document is authentic" : "Document has been tampered with",
+                    isValid
+            );
+        }
+        catch(IOException e) {
+            throw new RuntimeException("Failed to verify document");
+        }
+    }
+    private DocumentDTO mapToDTO(Document document) {
+        DocumentDTO dto = new DocumentDTO();
+        dto.setId(document.getId());
+        dto.setDocumentType(document.getDocumentType().name());
+        dto.setFileName(document.getFileName());
+        dto.setFileHash(document.getFileHash());
+        dto.setMimeType(document.getMimeType());
+        dto.setFileSize(document.getFileSize());
+        dto.setDocumentStatus(document.getDocumentStatus().name());
+        dto.setUploadedAt(document.getUploadedAt());
+        return dto;
+    }
 
 }
