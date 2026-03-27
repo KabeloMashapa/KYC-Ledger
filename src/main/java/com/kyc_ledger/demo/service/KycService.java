@@ -1,5 +1,6 @@
 package com.kyc_ledger.demo.service;
 import com.google.protobuf.Api;
+import com.google.rpc.context.AttributeContext;
 import com.kyc_ledger.demo.dto.*;
 import com.kyc_ledger.demo.exception.FabricException;
 import com.kyc_ledger.demo.exception.UserNotFoundException;
@@ -125,6 +126,36 @@ public class KycService {
         );
         return ApiResponseDTO.success("Kyc Rejected",mapToDTO(kycRecord));
 
+    }
+    // Verify KYC on blockchain
+    public ApiResponseDTO<Boolean> verifyKycOnBlockchain(String kycId) {
+        KycRecord kycRecord = kycRepository.findByKycId(kycId
+        ).orElseThrow(()-> new KycNotFoundException(("kycId",kycId)));
+        boolean isValid = fabricService.verifyKycOnBlockchain(
+                kycId,
+                kycRecord.getBlockchainHash()
+        );
+        return ApiResponseDTO.success(
+                isValid ? "KYC is valid on blockchain" : "KYC verification failed",
+                isValid
+        );
+    }
+    // Map KycRecord entity to KycResponseDTO
+    private KycResponseDTO mapToDTO(KycRecord record) {
+        KycResponseDTO dto = new KycResponseDTO();
+        dto.setId(record.getId());
+        dto.setKycId(record.getKycId());
+        dto.setFullName(record.getFirstName() + " " + record.getLastName());
+        dto.setIdNumber(record.getIdNumber());
+        dto.setNationality(record.getNationality());
+        dto.setStatus(record.getStatus().name());
+        dto.setBlockchainTxId(record.getBlockchainTxId());
+        dto.setBlockchainHash(record.getBlockchainHash());
+        dto.setRejectionReason(record.getRejectionReason());
+        dto.setSubmittedAt(record.getSubmittedAt());
+        dto.setReviewedAt(record.getReviewedAt());
+        dto.setExpiresAt(record.getExpiresAt());
+        return dto;
     }
 
 }
