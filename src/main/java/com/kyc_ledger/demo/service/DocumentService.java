@@ -3,6 +3,7 @@ import com.kyc_ledger.demo.dto.ApiResponseDTO;
 import com.kyc_ledger.demo.dto.DocumentDTO;
 import com.kyc_ledger.demo.exception.InvalidFileException;
 import com.kyc_ledger.demo.exception.KycNotFoundException;
+import com.kyc_ledger.demo.model.Document;
 import com.kyc_ledger.demo.model.KycRecord;
 import com.kyc_ledger.demo.repository.DocumentRepository;
 import com.kyc_ledger.demo.repository.KycRepository;
@@ -37,5 +38,29 @@ public class DocumentService {
         if(!FileUtil.isValidFileSize(file)) {
             throw new InvalidFileException("File size exceeds 10mb limit");
         }
+        KycRecord kycRecord = kycRepository.findByKycId(kycId
+        ).orElseThrow(()-> new KycNotFoundException("KycId",kycId));
+        try {
+            String fileHash = HashUtil.hashFile(file);
+            if(documentRepository.existsByFileHash(fileHash)) {
+                throw new InvalidFileException("This document has already been uploaded");
+            }
+            String filePath = FileUtil.saveFile(file,uploadDir);
+            Document document = new Document();
+            document.setKycRecord(kycRecord);
+            document.setDocumentType(Document.DocumentType.valueOf(documentType.toUpperCase()));
+            document.setFileName(file.getOriginalFilename());
+            document.setFilePath(filePath);
+            document.setFileHash(fileHash);
+            document.setMimeType(file.getContentType());
+            document.setFileSize(file.getSize());
+            documentRepository.save(document);
+            return ApiResponseDTO.success("Document uploaded successfully",mapToDTO(document));
+
+        }
+        catch (IOException e) {
+            throw new RuntimeException("Failedd to upload document: "+e.getMessage());
+        }
     }
+
 }
