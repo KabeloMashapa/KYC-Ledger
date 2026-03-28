@@ -17,5 +17,4 @@ public interface DocumentRepository extends JpaRepository<Document,Long> {
     boolean existsByFileHash (String fileHash);
     List<Document> findByDocumentStatus(Document.DocumentStatus status);
 
-
 }
