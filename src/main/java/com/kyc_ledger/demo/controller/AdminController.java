@@ -23,6 +23,7 @@ public class AdminController {
     private final KycRecord kycRecord;
     private final KycRepository kycRepository;
     private final UserRepository userRepository;
+    private final KycService kycService;
 
     // GET /admin/password
     @GetMapping("/admin/dashboard")
@@ -35,5 +36,10 @@ public class AdminController {
         stats.put("rejectedKyc",kycRepository.countByStatuss(KycRecord.KycStatus.REJECTED));
 
         return ResponseEntity.ok(ApiResponseDTO.success("DashBoard stats",stats));
+    }
+    // GET /admin/kyc/pending
+    @GetMapping("/kyc/pending")
+    public ResponseEntity<ApiResponseDTO<List<KycResponseDTO>>> getPendingKyc() {
+        return ResponseEntity.ok(kycService.getKycByStatus("Pending"));
     }
 }
