@@ -45,9 +45,17 @@ public class KycController {
     @PutMapping("/{kycId}/approve")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponseDTO<KycResponseDTO>> approveKyc(
-            @PathVariable String kycId, @RequestParam Long adminId,@RequestParam String reason
+            @PathVariable String kycId, @RequestParam Long adminId
     ) {
         return ResponseEntity.ok(kycService.approveKyc(kycId,adminId));
+    }
+    // PUT /api/kyc/{kycId}/reject
+    @PutMapping("/{kycId}/reject")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponseDTO<KycResponseDTO>> rejectKyc(
+            @PathVariable String kycId,@RequestParam Long adminId,@RequestParam String reason
+    ) {
+        return ResponseEntity.ok(kycService.rejectKyc(kycId,adminId,reason));
     }
 
 
