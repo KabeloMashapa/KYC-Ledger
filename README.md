@@ -88,7 +88,7 @@ The platform typically follows a hybrid architecture:
 ## Tech Stack
 
 **Possible stack:**
-- **Frontend:** React / Next.js
+- **Frontend:** React
 - **Backend:** Spring Boot / Node.js
 - **Blockchain:** Ethereum / Hyperledger Fabric
 - **Smart Contracts:** Solidity
