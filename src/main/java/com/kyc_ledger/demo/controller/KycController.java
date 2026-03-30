@@ -57,6 +57,14 @@ public class KycController {
     ) {
         return ResponseEntity.ok(kycService.rejectKyc(kycId,adminId,reason));
     }
+    // GET /api/kyc/{kycId}/verify
+    @GetMapping("/{kycId}/verify")
+    @PreAuthorize("hasRole('ADMIN','INSTITUTION')")
+    public ResponseEntity<ApiResponseDTO<Boolean>> verifyKyc(
+            @PathVariable String kycId
+    ) {
+        return ResponseEntity.ok(kycService.verifyKycOnBlockchain(kycId));
+    }
 
 
 
