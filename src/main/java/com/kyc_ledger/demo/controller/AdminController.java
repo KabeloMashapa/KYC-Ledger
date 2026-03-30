@@ -48,11 +48,18 @@ public class AdminController {
         return ResponseEntity.ok(kycService.getKycByStatus("Pending"));
     }
     // PUT /api/admin/kyc/{kycId}/approve
-    PutMapping("/kyc/{kycId}/approve")
+    @PutMapping("/kyc/{kycId}/approve")
     public ResponseEntity<ApiResponseDTO<List<KycResponseDTO>>> approveKyc(
             @PathVariable String kycId, @RequestParam Long adminId
     ) {
         return ResponseEntity.ok(kycService.approveKyc(kycId,adminId));
 
+    }
+    // PUT /api/admin/kyc/{kycId}/reject
+    @PutMapping("/kyc/{kycId}/reject")
+    public ResponseEntity<ApiResponseDTO<List<KycResponseDTO>>> rejectKyc(
+            @PathVariable String kycId, @RequestParam Long adminId, @RequestParam String reason
+    ) {
+        return ResponseEntity.ok(kycService.rejectKyc(kycId,adminId,reason));
     }
 }
