@@ -87,8 +87,6 @@ The platform typically follows a hybrid architecture:
 
 ## Tech Stack
 
-> Update this section to match your actual project stack.
-
 **Possible stack:**
 - **Frontend:** React / Next.js
 - **Backend:** Spring Boot / Node.js
