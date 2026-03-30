@@ -33,6 +33,15 @@ public class KycController {
     ) {
         return ResponseEntity.ok(kycService.getKycById(kycId));
     }
+    @GetMapping("/status/{status}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponseDTO<KycResponseDTO>> getKycByStatus(
+            @PathVariable String status
+    ) {
+        return ResponseEntity.ok(kycService.getKycByStatus(status));
+
+    }
+
 
 
 
