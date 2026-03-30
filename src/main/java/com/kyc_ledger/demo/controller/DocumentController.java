@@ -33,4 +33,12 @@ public class DocumentController {
     ) {
         return ResponseEntity.ok(documentService.getDocumentsByKycId(kycId));
     }
+    // POST /verify/documents
+    @PostMapping("/verify/{documentId}")
+    @PreAuthorize("hasAnyRole('ADMIN','INSTITUTION')")
+    public ResponseEntity<ApiResponseDTO<Boolean>> verifyDocument(
+            @PathVariable Long documentId, @RequestParam("file") MultipartFile file
+    ) {
+        return ResponseEntity.ok(documentService.verifyDocument(documentId,file));
+    }
 }
