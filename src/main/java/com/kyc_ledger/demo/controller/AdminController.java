@@ -42,4 +42,9 @@ public class AdminController {
     public ResponseEntity<ApiResponseDTO<List<KycResponseDTO>>> getPendingKyc() {
         return ResponseEntity.ok(kycService.getKycByStatus("Pending"));
     }
+    // GET /admin/kyc/all
+    @GetMapping("/kyc/all")
+    public ResponseEntity<ApiResponseDTO<List<KycResponseDTO>>> getAllKyc() {
+        return ResponseEntity.ok(kycService.getKycByStatus("Pending"));
+    }
 }
