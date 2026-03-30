@@ -25,4 +25,12 @@ public class DocumentController {
         return ResponseEntity.ok(documentService.uploadDocument(kycId,file,documentType));
 
     }
+    // GET /api/documents/upload
+    @GetMapping("/{kycId}/")
+    @PreAuthorize("hasAnyRole('USER','ADMIN','INSTITUTION')")
+    public ResponseEntity<ApiResponseDTO<List<DocumentDTO>>> getDocuments(
+            @PathVariable String kycId
+    ) {
+        return ResponseEntity.ok(documentService.getDocumentsByKycId(kycId));
+    }
 }
