@@ -26,3 +26,17 @@ api.interceptors.response.use(
         return Promise.reject(error);
     }
 );
+export const authAPI = {
+    register: (data) => api.post('/auth/register/',data),
+    login: (data) => api.post('/auth/login',data),
+};
+export const kycAPI = {
+    submitKyc: (data) => api.post('/api/kyc/submit',data),
+    getKycById: (kycId) => api.get(`/kyc/${kycId}`),
+    getKycByUserId: (userId) => api.get(`/kyc/user/${userId}`),
+    verifyKyc: (kycId)=> api.get(`/kyc/${kycId}/verify`),
+    approveKyc:(kycId,adminId) => api.put(`/kyc/${kycId}/approve?adminId=${adminId}`),
+    rejectKyc:(kycId,adminId,reason) => api.put(
+        `/kyc/${kycId}/reject?adminId=${adminId}&reason=${reason}`
+    ),
+};
