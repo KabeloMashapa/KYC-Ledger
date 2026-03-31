@@ -66,6 +66,27 @@ const AdminDashboard = () => {
             {label: 'Approved KYC',value: stats.approvedKyc, icon:<CheckCircle size={24}/>, color:'text-green-400'},
             {label: 'Rejected KYC',value: stats.rejectedKyc, icon:<XCircle size={24}/>,color:'text-red-400'},
         ];
+        return (
+            <div className="min-h-screen bg-gray-950 text-white">
+                <Navbar />
+                <div className="max-w-6xl mx-auto px-6 py-10">
+                    <h1 className="text-3xl font-bold mb-8">Admin DashBoard</h1>
+                    {/* Stats Cards*/}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-5 mb-10">
+                        {statsCards.map((card) => (
+                            <div key={card.label}
+                            className="bg-gray-900 rounded-2xl p-6 flex items-center gap-4 border border-gray-800">
+                                <div>
+                                    <p className="text-2xl font-bold">{card.value ??'...'}</p>
+                                    <p className="text-gray-400 text-sm">{card.label}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    {/* Pending KYC */}
+                </div>
+            </div>
+        )
     })
 
 }
