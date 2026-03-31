@@ -40,3 +40,10 @@ export const kycAPI = {
         `/kyc/${kycId}/reject?adminId=${adminId}&reason=${reason}`
     ),
 };
+export const docuemntAPI = {
+    uploadDocument: (kycAPI,formData) => api.post(`/documents/upload/${kycAPI}`,formData,{
+        headers: {'Content-Type':'multipart/form-data'},
+    }),
+    getDocuments: (kycId) => api.get(`/documents/${kycId}`),
+
+}
