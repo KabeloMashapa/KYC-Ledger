@@ -84,9 +84,47 @@ const AdminDashboard = () => {
                         ))}
                     </div>
                     {/* Pending KYC */}
+                    <div className="bg-gray-900 rounded-2xl p-6 border border-gray-800">
+                        <h2 className="text-xl font-bold mb-6" >Pending KYC Reviews</h2>
+                        {loading ? (
+                            <p className="text-gray-400 text-center py-10">Loading...</p>
+
+                        ) : pendingKyc.length === 0 ? (
+                            <p className ="text-gray-400 text-center py-10">
+                                No Pending Kyc Record
+                            </p>
+                        ):(
+                            <div className="space-y-4">
+                                {pendingKyc.map((kyc) => (
+                                    <div key={kyc.id}
+                                         className="flex justify-between items-center bg-gray-800 rounded-xl p-5">
+                                        <div>
+                                            <p className="font-semibold">{kyc.fullName}</p>
+                                            <p className="text-gray-400 text-sm">ID: {kyc.kycId}</p>
+                                            <p className="text-gray-400 text-sm">
+                                                {new Date(kyc.submittedAt).toLocaleDateString()}
+                                            </p>
+                                        </div>
+                                        <div className="flex items-center gap-3">
+                                            <KycStatusBadge status={kyc.status}/>
+                                            <button onClick={() => handleApprove(kyc.kycId)}
+                                                    className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg text-sm font-semibold transition">
+                                                Approve
+                                            </button>
+                                            <button onClick={() => handleReject(kyc.kycId)}
+                                                    className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg text-sm font-semibold transition">
+                                                Reject
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            )}
+                    </div>
                 </div>
             </div>
-        )
-    })
+        );
+    });
 
 }
+export default AdminDashboard;
