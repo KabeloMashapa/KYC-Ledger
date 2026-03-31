@@ -60,6 +60,12 @@ const AdminDashboard = () => {
                 toast.error('Failed to reject KYC');
             }
         };
+        const statsCards = [
+            {label: 'Total Users',value: stats.totalUsers,icon:<Users size={24}/>,color:'text-blue-400'},
+            {label: 'Pending KYC',value: stats.pendingKyc, icon:<Clock size={24}/>, color:'text-yellow-400'},
+            {label: 'Approved KYC',value: stats.approvedKyc, icon:<CheckCircle size={24}/>, color:'text-green-400'},
+            {label: 'Rejected KYC',value: stats.rejectedKyc, icon:<XCircle size={24}/>,color:'text-red-400'},
+        ];
     })
 
 }
