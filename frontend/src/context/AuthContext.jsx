@@ -20,5 +20,24 @@ export const AuthProvider = ({children}) => {
         setToken(jwtToken);
         localStorage.setItem('token',jwtToken);
         localStorage.setItem('user',JSON.stringify(userData));
-    }
-}
+    };
+    const logout = () => {
+        setUser(null);
+        setToken(null);
+        localStorage.clear();
+    };
+    const isAdmin = () => user?.role === 'ADMIN';
+    const isUser = () => user?.role === 'USER';
+    const isInstitution = () => user?.role === 'INSTITUTION';
+
+    return (
+        <AuthContext.Provider value={{
+            user,token,loading,
+            login,logout,
+            isAdmin,isUser,isInstitution
+        }}>
+            {children}
+        </AuthContext.Provider>
+    );
+};
+export const useAuth = () => useContext(AuthContext);
