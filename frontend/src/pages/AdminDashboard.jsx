@@ -48,6 +48,18 @@ const AdminDashboard = () => {
                 toast.error('Failed to approve KYC');
             }
         };
+        const handleReject = async (kycId) => {
+            const reason = prompt('Enter rejection reason:');
+            if(!reason) return;
+            try {
+                await kycAPI.rejectKyc(kycId, user.userId, reason);
+                toast.success('KYC rejected');
+                setPendingKyc(pendingKyc.filter((k)=> k.kycId ! == kycId));
+            }
+            catch {
+                toast.error('Failed to reject KYC');
+            }
+        };
     })
 
 }
