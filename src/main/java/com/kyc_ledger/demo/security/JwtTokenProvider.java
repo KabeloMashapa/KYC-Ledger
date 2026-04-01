@@ -32,4 +32,26 @@ public class JwtTokenProvider {
                 .getBody()
                 .getSubject();
     }
+    public boolean validateToken(String token) {
+        try {
+            Key key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
+            Jwts.parser()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token);
+            return true;
+        }
+        catch (MalformedJwtException e) {
+            System.out.println("Invalid JWT token: " + e.getMessage());
+        } catch (ExpiredJwtException e) {
+            System.out.println("JWT Token expired: " + e.getMessage());
+        }
+        catch(UnsupportedJwtException e) {
+            System.out.println("JWT token unsupported: " + e.getMessage());
+        }
+        catch(IllegalArgumentException e) {
+            System.out.println("JWT claims empty: " + e.getMessage());
+        }
+        return false;
+    }
 }
