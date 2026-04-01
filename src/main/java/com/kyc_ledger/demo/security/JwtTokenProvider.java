@@ -54,4 +54,13 @@ public class JwtTokenProvider {
         }
         return false;
     }
+    public Date getExpirationFromToken(String token) {
+        Key key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
+        return Jwts.parser()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getExpiration();
+    }
 }
