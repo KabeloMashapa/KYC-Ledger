@@ -152,7 +152,7 @@ Make sure you have the following installed:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/kyc-blockchain.git
+git clone https://github.com/KabeloMashapa/kyc-blockchain.git
 cd kyc-blockchain
 ```
 
