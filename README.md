@@ -1,108 +1,334 @@
-# KYC-Ledger
+#  KYC Blockchain — Hyperledger Fabric + Spring Boot + React
 
-A blockchain-based KYC verification sharing platform that helps financial institutions securely reuse verified customer identity records, reduce onboarding duplication, and improve trust across participating organizations.
+A full-stack **Know Your Customer (KYC)** platform built on **Hyperledger Fabric** blockchain, providing secure, tamper-proof identity verification for financial institutions.
 
-## Overview 
-KYC-Ledger is designed to modernize the traditional Know Your Customer (KYC) process by using blockchain technology to create a shared, tamper-evident verification layer between trusted institutions.
+---
 
-Instead of every bank or financial service provider repeating the same customer verification workflow from scratch, KYC-Ledger enables authorized participants to access trusted proof that a customer has already been verified, subject to permission and compliance rules.
+##  Table of Contents
 
-This approach can help reduce:
-- Repetitive KYC checks
-- Customer onboarding delays
-- Operational costs
-- Fraud risks caused by inconsistent verification records
+- [Overview](#overview)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Architecture](#architecture)
+- [Project Structure](#project-structure)
+- [Prerequisites](#prerequisites)
+- [Getting Started](#getting-started)
+- [API Endpoints](#api-endpoints)
+- [Roles & Permissions](#roles--permissions)
+- [Blockchain Integration](#blockchain-integration)
+- [Screenshots](#screenshots)
+- [Roadmap](#roadmap)
 
-## Problem Statement
+---
 
-Traditional KYC systems are often siloed. Each institution independently collects, verifies, and stores customer information, which leads to:
-- duplicated verification processes
-- higher compliance costs
-- slower account creation and onboarding
-- fragmented identity records across institutions
-- increased risk of document tampering and data inconsistencies
+##  Overview
 
-KYC-Ledger addresses these issues by introducing a shared ledger for verification status, auditability, and secure collaboration.
+KYC Blockchain is a permissioned blockchain solution that allows users to submit KYC documents once and share verified identity data with multiple institutions — without repeatedly submitting the same documents.
 
-## Solution
+Key benefits:
+- **Immutable** — KYC records stored on Hyperledger Fabric cannot be altered
+- **Tamper-proof** — SHA-256 document hashing ensures document integrity
+- **Privacy-first** — Only document hashes are stored on-chain, not raw files
+- **Multi-institution** — Banks and institutions can verify KYC without re-submission
 
-KYC-Ledger provides a decentralized platform where:
-- customers can submit identity verification requests
-- institutions can verify and approve KYC records
-- approved verification proofs can be referenced across authorized participants
-- blockchain ensures immutability, transparency, and auditability
-- sensitive personal data can remain off-chain while only hashes, references, or verification proofs are stored on-chain
+---
 
-## Key Features
+##  Features
 
-- **Decentralized KYC record validation**
-- **Immutable verification audit trail**
-- **Secure sharing of KYC verification status**
-- **Role-based access control for institutions and administrators**
-- **Reduced duplicate onboarding efforts**
-- **Tamper-evident document verification using blockchain hashes**
-- **Improved compliance traceability**
+### User Features
+- Register and login with JWT authentication
+- Submit KYC with personal details and documents
+- Track KYC status in real time (Pending, Approved, Rejected)
+- Upload supporting documents (Passport, National ID, Utility Bill, etc.)
+- Receive email notifications on KYC status updates
 
-## Architecture
+### Admin Features
+- Dashboard with KYC statistics
+- Review, approve, or reject KYC submissions
+- View all KYC records by status
 
-The platform typically follows a hybrid architecture:
+### Institution Features
+- Request KYC verification for a user
+- Verify KYC authenticity against blockchain hash
 
-- **Frontend**  
-  User interface for customers, compliance officers, and participating institutions
+### Blockchain Features
+- KYC data hash stored on Hyperledger Fabric ledger
+- Transaction ID returned for every blockchain operation
+- Blockchain verification endpoint to confirm data integrity
 
-- **Backend API**  
-  Handles authentication, business logic, document processing, and integration with blockchain services
+---
 
-- **Blockchain Layer**  
-  Stores verification proofs, transaction records, and smart contract logic
+##  Tech Stack
 
-- **Database / Off-chain Storage**  
-  Stores customer documents and metadata securely off-chain
+| Layer | Technology |
+|-------|-----------|
+| Backend | Java 21, Spring Boot 3.4.3 |
+| Security | Spring Security, JWT (jjwt 0.12.5) |
+| Database | H2 (dev) / PostgreSQL (prod) |
+| Blockchain | Hyperledger Fabric 2.x, Fabric Gateway SDK 1.4.0 |
+| Chaincode | Go (KYC smart contract) |
+| Frontend | React 18, Vite, Tailwind CSS |
+| HTTP Client | Axios |
+| Routing | React Router DOM v6 |
+| Notifications | React Toastify |
+| Email | Spring Mail (Gmail SMTP) |
+| Build Tool | Maven |
 
-## How It Works
+---
 
-1. A customer submits KYC information and supporting documents.
-2. A participating institution reviews and verifies the submitted data.
-3. Once approved, a proof of verification is recorded on the blockchain.
-4. Other authorized institutions can check the verification status without repeating the full KYC process.
-5. Every action is logged to provide a transparent and auditable compliance trail.
+##  Architecture
 
-## Use Cases
+```
+[React Frontend :5173]
+        |
+        | REST API (JWT)
+        ▼
+[Spring Boot Backend :8080]
+        |
+   ┌────┴────┐
+   |         |
+[H2/PostgreSQL]  [Hyperledger Fabric Network]
+                        |
+                 ┌──────┴──────┐
+               [Org1]        [Org2]
+              (Bank A)      (Bank B)
+                        |
+                 [KYC Chaincode]
+                 [Ledger - hashes]
+```
 
-- Banks sharing verified customer onboarding status
-- Fintech platforms reducing KYC duplication
-- Cross-institution compliance collaboration
-- Faster customer onboarding in regulated sectors
-- Fraud-resistant identity verification workflows
+---
 
-## Benefits
+##  Project Structure
 
-- Faster onboarding
-- Lower compliance and operational costs
-- Better transparency between institutions
-- Stronger trust through immutable records
-- Reduced redundancy in customer verification
-- Enhanced audit readiness
+```
+kyc-blockchain/
+├── src/main/java/com/kyc/blockchain/
+│   ├── config/               # Security & CORS config
+│   ├── controller/           # REST API controllers
+│   ├── dto/                  # Data Transfer Objects
+│   ├── exception/            # Custom exceptions & global handler
+│   ├── fabric/               # Hyperledger Fabric gateway
+│   ├── model/                # JPA entity classes
+│   ├── repository/           # Spring Data JPA repositories
+│   ├── security/             # JWT provider & filter
+│   ├── service/              # Business logic
+│   └── util/                 # HashUtil, FileUtil, DateUtil
+├── src/main/resources/
+│   ├── crypto-config/        # Fabric certificates
+│   ├── wallet/               # Fabric identity wallet
+│   └── application.properties
+├── chaincode/
+│   └── kyc-chaincode/        # Go smart contract
+├── fabric-network/           # Docker compose for Fabric network
+├── frontend/                 # React + Vite + Tailwind
+│   └── src/
+│       ├── components/       # Navbar, ProtectedRoute, StatusBadge
+│       ├── context/          # AuthContext (JWT state)
+│       ├── pages/            # Login, Register, Dashboard, etc.
+│       └── services/         # Axios API service
+└── pom.xml
+```
 
-## Tech Stack
+---
 
-**Possible stack:**
-- **Frontend:** React
-- **Backend:** Spring Boot / Node.js
-- **Blockchain:** Ethereum / Hyperledger Fabric
-- **Smart Contracts:** Solidity
-- **Database:** PostgreSQL / MongoDB
-- **Storage:** IPFS / Secure cloud storage
-- **Authentication:** JWT / OAuth 2.0
+##  Prerequisites
 
-## Project Structure
+Make sure you have the following installed:
+
+| Tool | Version | Download |
+|------|---------|----------|
+| Java JDK | 21 | https://adoptium.net |
+| Maven | 3.8+ | https://maven.apache.org |
+| Node.js & npm | 20 LTS | https://nodejs.org |
+| Docker Desktop | Latest | https://docker.com |
+| IntelliJ IDEA | Any | https://jetbrains.com |
+| Git | Latest | https://git-scm.com |
+
+---
+
+##  Getting Started
+
+### 1. Clone the Repository
 
 ```bash
-KYC-Ledger/
-├── frontend/        # User interface
-├── backend/         # API and business logic
-├── contracts/       # Smart contracts
-├── docs/            # Documentation
-├── scripts/         # Deployment or utility scripts
-└── README.md        # Description of the project
+git clone https://github.com/yourusername/kyc-blockchain.git
+cd kyc-blockchain
+```
 
+### 2. Configure `application.properties`
+
+Edit `src/main/resources/application.properties`:
+
+```properties
+spring.application.name=kyc-blockchain
+server.port=8080
+
+# H2 Database (development)
+spring.datasource.url=jdbc:h2:mem:kycdb
+spring.datasource.username=sa
+spring.datasource.password=
+
+# H2 Console
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+
+# JWT
+jwt.secret=your-secret-key-minimum-256-bits-long
+jwt.expiration=86400000
+
+# Email
+spring.mail.username=youremail@gmail.com
+spring.mail.password=your-app-password
+```
+
+### 3. Run the Spring Boot Backend
+
+```bash
+# From project root
+mvn spring-boot:run
+```
+
+Backend will start at: `http://localhost:8080`
+
+H2 Console available at: `http://localhost:8080/h2-console`
+
+### 4. Run the React Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Frontend will start at: `http://localhost:5173`
+
+### 5. Open in Browser
+
+```
+http://localhost:5173
+```
+
+---
+
+## 📡 API Endpoints
+
+### Auth
+| Method | Endpoint | Access | Description |
+|--------|----------|--------|-------------|
+| POST | `/api/auth/register` | Public | Register new user |
+| POST | `/api/auth/login` | Public | Login & get JWT token |
+
+### KYC
+| Method | Endpoint | Access | Description |
+|--------|----------|--------|-------------|
+| POST | `/api/kyc/submit` | USER | Submit KYC application |
+| GET | `/api/kyc/{kycId}` | ALL | Get KYC by ID |
+| GET | `/api/kyc/user/{userId}` | USER/ADMIN | Get user's KYC records |
+| GET | `/api/kyc/status/{status}` | ADMIN | Get KYC by status |
+| PUT | `/api/kyc/{kycId}/approve` | ADMIN | Approve KYC |
+| PUT | `/api/kyc/{kycId}/reject` | ADMIN | Reject KYC |
+| GET | `/api/kyc/{kycId}/verify` | ADMIN/INSTITUTION | Verify on blockchain |
+
+### Documents
+| Method | Endpoint | Access | Description |
+|--------|----------|--------|-------------|
+| POST | `/api/documents/upload/{kycId}` | USER/ADMIN | Upload KYC document |
+| GET | `/api/documents/{kycId}` | ALL | Get documents for KYC |
+| POST | `/api/documents/verify/{documentId}` | ADMIN | Verify document hash |
+
+### Admin
+| Method | Endpoint | Access | Description |
+|--------|----------|--------|-------------|
+| GET | `/api/admin/dashboard` | ADMIN | Get dashboard stats |
+| GET | `/api/admin/kyc/pending` | ADMIN | Get pending KYC list |
+| GET | `/api/admin/kyc/all` | ADMIN | Get all KYC records |
+
+---
+
+##  Roles & Permissions
+
+| Role | Description | Permissions |
+|------|-------------|------------|
+| `USER` | Regular customer | Submit KYC, view own records, upload documents |
+| `ADMIN` | KYC reviewer | Approve/reject KYC, view all records, admin dashboard |
+| `INSTITUTION` | Bank or org | Verify KYC on blockchain, request verification |
+
+---
+
+##  Blockchain Integration
+
+### How It Works
+
+1. User submits KYC → Spring Boot hashes KYC data using **SHA-256**
+2. Hash is submitted to **Hyperledger Fabric** via the Gateway SDK
+3. Fabric returns a **Transaction ID** stored in the database
+4. Any institution can verify the hash against the blockchain at any time
+
+### KYC Data Flow
+
+```
+User submits KYC
+      ↓
+Spring Boot hashes data (SHA-256)
+      ↓
+Hash submitted to Fabric chaincode
+      ↓
+Transaction ID returned & stored in DB
+      ↓
+Institution requests verification
+      ↓
+Hash compared against blockchain ledger
+      ↓
+ Valid or  Tampered
+```
+
+### Supported Document Types
+- `PASSPORT`
+- `NATIONAL_ID`
+- `DRIVERS_LICENSE`
+- `UTILITY_BILL`
+- `BANK_STATEMENT`
+- `SELFIE_WITH_ID`
+
+---
+
+##  Roadmap
+
+- [x] Spring Boot REST API
+- [x] JWT Authentication & Authorization
+- [x] KYC Submission & Review workflow
+- [x] Document upload & SHA-256 hashing
+- [x] React frontend with Tailwind CSS
+- [x] Admin dashboard
+- [ ] Real Hyperledger Fabric network (Docker)
+- [ ] Go chaincode deployment
+- [ ] Switch to PostgreSQL for production
+- [ ] Dockerize full stack
+- [ ] IPFS document storage
+- [ ] Multi-institution verification portal
+
+---
+
+##  Security
+
+- Passwords hashed with **BCrypt**
+- API secured with **JWT Bearer tokens**
+- Role-based access control on all endpoints
+- Document integrity verified via **SHA-256 hashing**
+- KYC data hash stored on **immutable blockchain ledger**
+- CORS configured for frontend origin only
+
+---
+
+##  Author
+
+**Masha**
+- Project: KYC Blockchain — Hyperledger Fabric + Spring Boot + React
+- Institution: SMC
+
+---
+
+##  License
+
+This project is for educational purposes.
