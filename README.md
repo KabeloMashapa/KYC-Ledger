@@ -2,8 +2,7 @@
 
 A blockchain-based KYC verification sharing platform that helps financial institutions securely reuse verified customer identity records, reduce onboarding duplication, and improve trust across participating organizations.
 
-## Overview
-
+## Overview 
 KYC-Ledger is designed to modernize the traditional Know Your Customer (KYC) process by using blockchain technology to create a shared, tamper-evident verification layer between trusted institutions.
 
 Instead of every bank or financial service provider repeating the same customer verification workflow from scratch, KYC-Ledger enables authorized participants to access trusted proof that a customer has already been verified, subject to permission and compliance rules.
