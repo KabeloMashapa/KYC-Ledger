@@ -152,8 +152,8 @@ Make sure you have the following installed:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/KabeloMashapa/kyc-blockchain.git
-cd kyc-blockchain
+https://github.com/KabeloMashapa/KYC-Ledger.git
+cd kyc-ledger
 ```
 
 ### 2. Configure `application.properties`
@@ -161,7 +161,7 @@ cd kyc-blockchain
 Edit `src/main/resources/application.properties`:
 
 ```properties
-spring.application.name=kyc-blockchain
+spring.application.name=kyc-ledger
 server.port=8080
 
 # H2 Database (development)
