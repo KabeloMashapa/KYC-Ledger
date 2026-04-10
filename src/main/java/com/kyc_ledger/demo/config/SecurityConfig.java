@@ -53,6 +53,11 @@ public class SecurityConfig implements UserDetailsServiceImpl {
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
+    @Bean
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager()
+    }
 
 
 }
