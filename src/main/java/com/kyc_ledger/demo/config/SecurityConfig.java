@@ -33,7 +33,9 @@ public class SecurityConfig implements UserDetailsServiceImpl {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/actuator/**"))
+                        .requestMatchers("/actuator/**")
+                        .requestMatchers("/api/admin/**").permitAll()
+                        )
     }
 
 
