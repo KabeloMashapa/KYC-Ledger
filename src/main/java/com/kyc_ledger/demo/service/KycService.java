@@ -130,7 +130,7 @@ public class KycService {
     // Verify KYC on blockchain
     public ApiResponseDTO<Boolean> verifyKycOnBlockchain(String kycId) {
         KycRecord kycRecord = kycRepository.findByKycId(kycId
-        ).orElseThrow(()-> new KycNotFoundException(("kycId",kycId)));
+        ).orElseThrow(()-> new KycNotFoundException("kycId",kycId));
         boolean isValid = fabricService.verifyKycOnBlockchain(
                 kycId,
                 kycRecord.getBlockchainHash()
