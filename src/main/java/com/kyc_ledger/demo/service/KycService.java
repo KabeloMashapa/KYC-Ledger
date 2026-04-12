@@ -26,6 +26,7 @@ public class KycService {
     private final FabricException fabricException;
     private final EmailService emailService;
     private final KycRepository kycRepository;
+    private final FabricService fabricService;
 
     // Submit new KYC
     public ApiResponseDTO<KycResponseDTO> submitKyc(KycRequestDTO request) {
