@@ -31,7 +31,7 @@ public class KycService {
     // Submit new KYC
     public ApiResponseDTO<KycResponseDTO> submitKyc(KycRequestDTO request) {
         User user = userRepository.findById(request.getUserId()
-        ).orElseThrow(()-> new UserNotFoundException(request.getUserId()));
+                ).orElseThrow(()-> new UserNotFoundException(request.getUserId()));
 
         // Check if the user has a approved or pending KYC request
         kycRepository.findByUserAndStatus(user, KycRecord.KycStatus.APPROVED).ifPresent(kyc -> {

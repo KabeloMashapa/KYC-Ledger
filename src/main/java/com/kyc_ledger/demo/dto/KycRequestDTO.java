@@ -23,5 +23,5 @@ public class KycRequestDTO {
     @NotBlank(message = "Country is required")
     private String country;
     @NotBlank(message = "User ID is required")
-    private String userId;
+    private Long userId;
 }
