@@ -9,6 +9,6 @@ public class KycNotFoundException extends RuntimeException{
         super("KYC record not found with iD: "+ id);
     }
     public KycNotFoundException(String field,String value) {
-        super("KYC record not found with " + field + ": "+value)
+        super("KYC record not found with " + field + ": "+value);
     }
 }
