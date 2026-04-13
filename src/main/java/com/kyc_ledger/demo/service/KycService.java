@@ -123,7 +123,8 @@ public class KycService {
         emailService.sendKycRejectedEmail(
                 kycRecord.getUser().getEmail(),
                 kycRecord.getUser().getFullName(),
-                kycId
+                kycId,
+                reason
         );
         return ApiResponseDTO.success("Kyc Rejected",mapToDTO(kycRecord));
 
