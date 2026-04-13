@@ -10,6 +10,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -20,13 +22,13 @@ public class AuthController {
     // POST api/auth/register
     @PostMapping("/register")
     public ResponseEntity<ApiResponseDTO<String>> register(
-            @Valid @ResponseBody RegisterRequestDTO request) {
+            @Valid @RequestBody RegisterRequestDTO request) {
         return ResponseEntity.ok(authService.register(request));
     }
     // Post api/auth/login
     @PostMapping("/login")
-    public ResponseEntity<ApiResponseDTO<String>> login(
-            @Valid @ResponseBody LoginRequestDTO request) {
+    public ResponseEntity <ApiResponseDTO<LoginResponseDTO>> login(
+            @Valid @RequestBody LoginRequestDTO request) {
         return ResponseEntity.ok(authService.login(request));
     }
 
