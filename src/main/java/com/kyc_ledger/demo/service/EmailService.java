@@ -22,6 +22,17 @@ public class EmailService {
                         "Regards,\nKYC Blockchain Team"
         );
     }
+    public void sendKycApprovedEmail(String to,String fullName,String kycId) {
+        sendEmail(
+                to,
+                "KYC Approved Received - "+ kycId,
+                "Dear "+ fullName + ",\n\n"+
+                        "Your KYC Submission has been approved.\n"+
+                        "KYC ID: "+kycId + "\n"+
+                        "Status: APPROVED\n\n"+
+                        "Regards,\nKYC Blockchain Team"
+        );
+    }
     // KYC Rejected
     public void sendKycRejectedEmail(String to, String fullName,String kycId,String reason) {
         sendEmail(
