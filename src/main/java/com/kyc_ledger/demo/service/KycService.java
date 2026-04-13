@@ -89,7 +89,7 @@ public class KycService {
 
     }
     // Approve KYC
-    public ApiResponseDTO<List<KycResponseDTO>> approveKyc(String kycId, Long adminId) {
+    public ApiResponseDTO<KycResponseDTO> approveKyc(String kycId, Long adminId) {
         KycRecord kycRecord = kycRepository.findByKycId(kycId
         ).orElseThrow(() -> new KycNotFoundException("kycId",kycId));
         User admin = userRepository.findById(adminId
@@ -109,7 +109,7 @@ public class KycService {
 
     }
     // Reject KYC
-    public ApiResponseDTO<List<KycResponseDTO>>  rejectKyc(String kycId,Long adminId, String reason) {
+    public ApiResponseDTO<KycResponseDTO>  rejectKyc(String kycId,Long adminId, String reason) {
         KycRecord kycRecord = kycRepository.findByKycId(kycId
         ).orElseThrow(() -> new KycNotFoundException("kycId",kycId));
         User admin = userRepository.findById(adminId
