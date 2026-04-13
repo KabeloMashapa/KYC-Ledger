@@ -28,7 +28,7 @@ public class DateUtil {
     }
     public static boolean isExpired(LocalDateTime expiryDate) {
         if(expiryDate == null) return false ;
-        return LocalDateTime.now().isAfter(expiryDate;
+        return LocalDateTime.now().isAfter(expiryDate);
 
     }
     public static int calculateAge(String dateOfBirth) {
