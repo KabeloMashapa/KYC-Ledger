@@ -84,7 +84,7 @@ public class KycService {
         KycRecord.KycStatus kycStatus = KycRecord.KycStatus.valueOf(status.toLowerCase());
         List<KycRecord> records = kycRepository.findByStatus(kycStatus);
         List<KycResponseDTO> dtos = records.stream(
-               ).collect(Collectors.toList());
+               ).map(this::mapToDTO).collect(Collectors.toList());
         return ApiResponseDTO.success("KYC records retrieved ",dtos);
 
     }
