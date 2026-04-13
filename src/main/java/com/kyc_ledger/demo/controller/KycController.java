@@ -21,7 +21,7 @@ public class KycController {
     @PostMapping("/submit")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<ApiResponseDTO<KycResponseDTO>> submitKyc(
-            @Valid @ResponseBody KycRequestDTO request
+            @Valid @RequestBody KycRequestDTO request
     ) {
         return ResponseEntity.ok(kycService.submitKyc(request));
     }
