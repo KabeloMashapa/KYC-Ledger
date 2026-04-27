@@ -4,7 +4,6 @@ import com.kyc_ledger.demo.dto.KycResponseDTO;
 import com.kyc_ledger.demo.dto.ApiResponseDTO;
 import com.kyc_ledger.demo.service.KycService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,11 +11,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/kyc")
-@RequiredArgsConstructor
+
 
 public class KycController {
 
     private final KycService kycService;
+
+    public KycController(KycService kycService) {
+        this.kycService = kycService;
+    }
     // POST /api/kyc/submit
     @PostMapping("/submit")
     @PreAuthorize("hasRole('USER')")
@@ -27,11 +30,18 @@ public class KycController {
     }
     // GET /api/kyc/{kycId}
     @GetMapping("/{kycId}")
-    @PreAuthorize("hasRole('USER','ADMIN','INSTITUTION')")
-    public ResponseEntity<ApiResponseDTO<KycResponseDTO>> getKycId(
+    @PreAuthorize("hasAnyRole('USER','ADMIN','INSTITUTION')")
+    public ResponseEntity<ApiResponseDTO<KycResponseDTO>> getKycById(
             @PathVariable String kycId
     ) {
         return ResponseEntity.ok(kycService.getKycById(kycId));
+    }
+    @GetMapping("/user/{userId}")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public ResponseEntity <ApiResponseDTO<List<KycResponseDTO>>> getKycUserId(
+            @PathVariable Long userId
+    ) {
+        return ResponseEntity.ok(kycService.getKycByUserId(userId));
     }
     @GetMapping("/status/{status}")
     @PreAuthorize("hasRole('ADMIN')")
