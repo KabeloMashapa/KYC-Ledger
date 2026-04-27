@@ -14,8 +14,8 @@ public class CorsConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.setAllowedOrigins(Arrays.asList(
-                "http://localhost:3000",// React frontend
-                "http://localhost:4300",// Angular frontend
+                "http://localhost:5173",// React frontend
+                "http://localhost:3000",// Angular frontend
                 "http:/localhost:8080" // same server
         ));
         config.setAllowedHeaders(Arrays.asList(
