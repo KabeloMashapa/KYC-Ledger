@@ -9,7 +9,7 @@ import com.kyc_ledger.demo.repository.DocumentRepository;
 import com.kyc_ledger.demo.repository.KycRepository;
 import com.kyc_ledger.demo.util.FileUtil;
 import com.kyc_ledger.demo.util.HashUtil;
-import lombok.RequiredArgsConstructor;
+//import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,11 +19,23 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class DocumentService {
 
     private final DocumentRepository documentRepository;
     private final KycRepository kycRepository;
+
+    public DocumentService(DocumentRepository documentRepository, KycRepository kycRepository) {
+        this.documentRepository = documentRepository;
+        this.kycRepository = kycRepository;
+    }
+
+    public DocumentRepository getDocumentRepository() {
+        return documentRepository;
+    }
+    public KycRepository getKycRepository() {
+        return kycRepository;
+    }
+
 
     @Value("${kyc.document.upload-dir}")
     private String uploadDir;
