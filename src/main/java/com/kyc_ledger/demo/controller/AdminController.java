@@ -32,6 +32,7 @@ public class AdminController {
     // GET /admin/password
     @GetMapping("/dashboard")
     public ResponseEntity<ApiResponseDTO<Map<String, Long>>> getDashBoard() {
+
         Map<String,Long> stats = new HashMap<>();
         stats.put("totalUsers", userRepository.count());
         stats.put("totalKyc", kycRepository.count());
