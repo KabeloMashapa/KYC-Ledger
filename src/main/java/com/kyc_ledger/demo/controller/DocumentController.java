@@ -2,7 +2,6 @@ package com.kyc_ledger.demo.controller;
 import com.kyc_ledger.demo.dto.ApiResponseDTO;
 import com.kyc_ledger.demo.dto.DocumentDTO;
 import com.kyc_ledger.demo.service.DocumentService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -11,11 +10,17 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/documents")
-@RequiredArgsConstructor
+
 
 public class DocumentController {
 
     private final DocumentService documentService;
+
+    public DocumentController(DocumentService documentService) {
+
+        this.documentService = documentService;
+
+    }
     // POST /api/documents/upload
     @PostMapping("/upload/{kycId}")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
@@ -26,7 +31,7 @@ public class DocumentController {
 
     }
     // GET /api/documents/upload
-    @GetMapping("/{kycId}/")
+    @GetMapping("/{kycId}")
     @PreAuthorize("hasAnyRole('USER','ADMIN','INSTITUTION')")
     public ResponseEntity<ApiResponseDTO<List<DocumentDTO>>> getDocuments(
             @PathVariable String kycId
