@@ -39,6 +39,26 @@ public class Institution {
     private List<KycVerificationRequest> verificationRequests;
     private LocalDateTime registeredAt;
 
+    public Institution() {}
+
+    public Institution(Long id,String institutionCode, String name,
+                       String email, String phoneNumber, String address,
+                       String country, InstitutionType type, InstitutionStatus status,
+                       String fabricMspId, String fabricChannelName, List<KycVerificationRequest> verificationRequests,
+                       LocalDateTime registeredAt) {
+        this.id = id;
+        this.institutionCode = institutionCode;
+        this.name = name ;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.country = country;
+        this.type = type;
+        this.status = status;
+        this.fabricMspId = fabricMspId;
+        this.fabricChannelName = fabricChannelName;
+    }
+
     @PrePersist
     protected void onCreate() {
         registeredAt = LocalDateTime.now();
